@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 
-import { HardhatUserConfig, task } from "hardhat/config";
+import { HardhatUserConfig, secrets, task } from "hardhat/config";
 import "@nomiclabs/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomiclabs/hardhat-etherscan";
@@ -87,7 +87,7 @@ const config: HardhatUserConfig = {
       chainId: 31337,
       hardfork: "shanghai",
       forking: {
-        url: process.env.ETH_MAINNET_URL || "",
+        url: secrets.get("ETH_MAINNET_URL") ?? "",
         // The Hardhat network will by default fork from the latest mainnet block
         // To pin the block number, specify it below
         // You will need access to a node with archival data for this to work!
@@ -95,658 +95,399 @@ const config: HardhatUserConfig = {
         // If you want to do some forking, set `enabled` to true
         enabled: false,
       },
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
       // zksync: true, // Enables zkSync in the Hardhat local network
     },
     localhost: {
       url: "http://127.0.0.1:8545",
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     tenderly: {
-      url: `https://rpc.tenderly.co/fork/${process.env.TENDERLY_FORK_ID}`,
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: `https://rpc.tenderly.co/fork/${secrets.get("TENDERLY_FORK_ID")}`,
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     devnet: {
-      url: `https://rpc.vnet.tenderly.co/devnet/${process.env.TENDERLY_DEVNET_ID}`,
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: `https://rpc.vnet.tenderly.co/devnet/${secrets.get("TENDERLY_DEVNET_ID")}`,
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     goerli: {
       chainId: 5,
-      url: process.env.ETH_GOERLI_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ETH_GOERLI_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     sepolia: {
       chainId: 11155111,
-      url: process.env.ETH_SEPOLIA_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ETH_SEPOLIA_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     ethMain: {
       chainId: 1,
-      url: process.env.ETH_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ETH_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     bscTestnet: {
       chainId: 97,
-      url: process.env.BSC_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("BSC_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     bscMain: {
       chainId: 56,
-      url: process.env.BSC_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("BSC_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     optimismTestnet: {
       chainId: 420,
-      url: process.env.OPTIMISM_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("OPTIMISM_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     optimismMain: {
       chainId: 10,
-      url: process.env.OPTIMISM_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("OPTIMISM_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     arbitrumTestnet: {
       chainId: 421613,
-      url: process.env.ARBITRUM_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ARBITRUM_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     arbitrumSepolia: {
       chainId: 421614,
-      url: process.env.ARBITRUM_SEPOLIA_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ARBITRUM_SEPOLIA_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     arbitrumMain: {
       chainId: 42161,
-      url: process.env.ARBITRUM_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ARBITRUM_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     arbitrumNova: {
       chainId: 42170,
-      url: process.env.ARBITRUM_NOVA_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ARBITRUM_NOVA_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     mumbai: {
       chainId: 80001,
-      url: process.env.POLYGON_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("POLYGON_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     polygonZkEVMTestnet: {
       chainId: 1442,
-      url: process.env.POLYGON_ZKEVM_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("POLYGON_ZKEVM_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     polygon: {
       chainId: 137,
-      url: process.env.POLYGON_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("POLYGON_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     polygonZkEVMMain: {
       chainId: 1101,
-      url: process.env.POLYGON_ZKEVM_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("POLYGON_ZKEVM_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     hecoTestnet: {
       chainId: 256,
-      url: process.env.HECO_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("HECO_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     hecoMain: {
       chainId: 128,
-      url: process.env.HECO_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("HECO_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     fantomTestnet: {
       chainId: 4002,
-      url: process.env.FANTOM_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("FANTOM_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     fantomMain: {
       chainId: 250,
-      url: process.env.FANTOM_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("FANTOM_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     fuji: {
       chainId: 43113,
-      url: process.env.AVALANCHE_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("AVALANCHE_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     avalanche: {
       chainId: 43114,
-      url: process.env.AVALANCHE_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("AVALANCHE_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     sokol: {
       chainId: 77,
-      url: process.env.SOKOL_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("SOKOL_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     chiado: {
       chainId: 10200,
-      url: process.env.GNOSIS_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("GNOSIS_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     gnosis: {
       chainId: 100,
-      url: process.env.GNOSIS_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("GNOSIS_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     moonbaseAlpha: {
       chainId: 1287,
-      url: process.env.MOONBEAM_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("MOONBEAM_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     moonriver: {
       chainId: 1285,
-      url: process.env.MOONRIVER_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("MOONRIVER_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     moonbeam: {
       chainId: 1284,
-      url: process.env.MOONBEAM_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("MOONBEAM_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     alfajores: {
       chainId: 44787,
-      url: process.env.CELO_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("CELO_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     celo: {
       chainId: 42220,
-      url: process.env.CELO_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("CELO_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     auroraTestnet: {
       chainId: 1313161555,
-      url: process.env.AURORA_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("AURORA_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     auroraMain: {
       chainId: 1313161554,
-      url: process.env.AURORA_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("AURORA_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     harmonyTestnet: {
       chainId: 1666700000,
-      url: process.env.HARMONY_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("HARMONY_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     harmonyMain: {
       chainId: 1666600000,
-      url: process.env.HARMONY_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("HARMONY_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     spark: {
       chainId: 123,
-      url: process.env.FUSE_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("FUSE_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     fuse: {
       chainId: 122,
-      url: process.env.FUSE_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("FUSE_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     cronosTestnet: {
       chainId: 338,
-      url: process.env.CRONOS_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("CRONOS_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     cronosMain: {
       chainId: 25,
-      url: process.env.CRONOS_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("CRONOS_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     evmosTestnet: {
       chainId: 9000,
-      url: process.env.EVMOS_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("EVMOS_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     evmosMain: {
       chainId: 9001,
-      url: process.env.EVMOS_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("EVMOS_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     bobaTestnet: {
       chainId: 2888,
-      url: process.env.BOBA_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("BOBA_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     bobaMain: {
       chainId: 288,
-      url: process.env.BOBA_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("BOBA_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     cantoTestnet: {
       chainId: 7701,
-      url: process.env.CANTO_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("CANTO_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     cantoMain: {
       chainId: 7700,
-      url: process.env.CANTO_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("CANTO_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     baseTestnet: {
       chainId: 84531,
-      url: process.env.BASE_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("BASE_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     baseMain: {
       chainId: 8453,
-      url: process.env.BASE_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("BASE_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     zkSyncTestnet: {
       chainId: 280,
-      url: process.env.ZKSYNC_TESTNET_URL || "",
-      ethNetwork: process.env.ETH_GOERLI_TESTNET_URL || "",
+      url: secrets.get("ZKSYNC_TESTNET_URL") || "",
+      ethNetwork: secrets.get("ETH_GOERLI_TESTNET_URL") || "",
       zksync: true,
       verifyURL:
         "https://zksync2-testnet-explorer.zksync.dev/contract_verification",
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     zkSyncMain: {
       chainId: 324,
-      url: process.env.ZKSYNC_MAINNET_URL || "",
-      ethNetwork: process.env.ETH_MAINNET_URL || "",
+      url: secrets.get("ZKSYNC_MAINNET_URL") || "",
+      ethNetwork: secrets.get("ETH_MAINNET_URL") || "",
       zksync: true,
       verifyURL:
         "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     mantleTestnet: {
       chainId: 5001,
-      url: process.env.MANTLE_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("MANTLE_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     mantleMain: {
       chainId: 5000,
-      url: process.env.MANTLE_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("MANTLE_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     filecoinTestnet: {
       chainId: 314159,
-      url: process.env.FILECOIN_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("FILECOIN_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     scrollTestnet: {
       chainId: 534353,
-      url: process.env.SCROLL_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("SCROLL_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     lineaTestnet: {
       chainId: 59140,
-      url: process.env.LINEA_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("LINEA_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     lineaMain: {
       chainId: 59144,
-      url: process.env.LINEA_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("LINEA_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     shimmerEVMTestnet: {
       chainId: 1071,
-      url: process.env.SHIMMEREVM_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("SHIMMEREVM_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     zoraTestnet: {
       chainId: 999,
-      url: process.env.ZORA_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ZORA_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     zoraMain: {
       chainId: 7777777,
-      url: process.env.ZORA_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ZORA_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     luksoTestnet: {
       chainId: 4201,
-      url: process.env.LUKSO_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("LUKSO_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     luksoMain: {
       chainId: 42,
-      url: process.env.LUKSO_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("LUKSO_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     mantaTestnet: {
       chainId: 3441005,
-      url: process.env.MANTA_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("MANTA_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     mantaMain: {
       chainId: 169,
-      url: process.env.MANTA_MAINNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("MANTA_MAINNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     shardeumTestnet: {
       chainId: 8081,
-      url: process.env.SHARDEUM_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("SHARDEUM_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
     artheraTestnet: {
       chainId: 10243,
-      url: process.env.ARTHERA_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      ledgerAccounts:
-        process.env.LEDGER_ACCOUNT !== undefined
-          ? [process.env.LEDGER_ACCOUNT]
-          : [],
+      url: secrets.get("ARTHERA_TESTNET_URL") || "",
+      accounts: secrets.getAsArray("PRIVATE_KEY"),
+      ledgerAccounts: secrets.getAsArray("LEDGER_ACCOUNT"),
     },
   },
   xdeploy: {
@@ -759,28 +500,24 @@ const config: HardhatUserConfig = {
 
     // The salt must be the same for each EVM chain for which you want to have a single contract address
     // Change the salt if you are doing a re-deployment with the same codebase
-    salt: process.env.SALT,
+    salt: secrets.get("SALT"),
 
     // This is your wallet's private key
-    signer: process.env.PRIVATE_KEY,
+    signer: secrets.get("PRIVATE_KEY"),
 
     // Use the network names specified here: https://github.com/pcaversaccio/xdeployer#configuration
     // Use `localhost` or `hardhat` for local testing
-    networks: ["hardhat", "sepolia", "bscTestnet"],
+    networks: ["hardhat"],
 
     // Use the matching env URL with your chosen RPC in the `.env` file
-    rpcUrls: [
-      "hardhat",
-      process.env.ETH_SEPOLIA_TESTNET_URL,
-      process.env.BSC_TESTNET_URL,
-    ],
+    rpcUrls: ["hardhat"],
 
     // Maximum limit is 15 * 10 ** 6 or 15,000,000. If the deployments are failing, try increasing this number
     // However, keep in mind that this costs money in a production environment!
     gasLimit: 1.2 * 10 ** 6,
   },
   gasReporter: {
-    enabled: process.env.REPORT_GAS !== undefined,
+    enabled: secrets.get("REPORT_GAS") !== undefined,
     currency: "USD",
   },
   contractSizer: {
@@ -803,88 +540,88 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       // For Ethereum testnets & mainnet
-      mainnet: process.env.ETHERSCAN_API_KEY || "",
-      goerli: process.env.ETHERSCAN_API_KEY || "",
-      sepolia: process.env.ETHERSCAN_API_KEY || "",
+      mainnet: secrets.get("ETHERSCAN_API_KEY") || "",
+      goerli: secrets.get("ETHERSCAN_API_KEY") || "",
+      sepolia: secrets.get("ETHERSCAN_API_KEY") || "",
       // For BSC testnet & mainnet
-      bsc: process.env.BSC_API_KEY || "",
-      bscTestnet: process.env.BSC_API_KEY || "",
+      bsc: secrets.get("BSC_API_KEY") || "",
+      bscTestnet: secrets.get("BSC_API_KEY") || "",
       // For Heco testnet & mainnet
-      heco: process.env.HECO_API_KEY || "",
-      hecoTestnet: process.env.HECO_API_KEY || "",
+      heco: secrets.get("HECO_API_KEY") || "",
+      hecoTestnet: secrets.get("HECO_API_KEY") || "",
       // For Fantom testnet & mainnet
-      opera: process.env.FANTOM_API_KEY || "",
-      ftmTestnet: process.env.FANTOM_API_KEY || "",
+      opera: secrets.get("FANTOM_API_KEY") || "",
+      ftmTestnet: secrets.get("FANTOM_API_KEY") || "",
       // For Optimism testnet & mainnet
-      optimisticEthereum: process.env.OPTIMISM_API_KEY || "",
-      optimisticGoerli: process.env.OPTIMISM_API_KEY || "",
+      optimisticEthereum: secrets.get("OPTIMISM_API_KEY") || "",
+      optimisticGoerli: secrets.get("OPTIMISM_API_KEY") || "",
       // For Polygon testnets & mainnets
-      polygon: process.env.POLYGON_API_KEY || "",
-      polygonZkEVM: process.env.POLYGON_ZKEVM_API_KEY || "",
-      polygonMumbai: process.env.POLYGON_API_KEY || "",
-      polygonZkEVMTestnet: process.env.POLYGON_ZKEVM_API_KEY || "",
+      polygon: secrets.get("POLYGON_API_KEY") || "",
+      polygonZkEVM: secrets.get("POLYGON_ZKEVM_API_KEY") || "",
+      polygonMumbai: secrets.get("POLYGON_API_KEY") || "",
+      polygonZkEVMTestnet: secrets.get("POLYGON_ZKEVM_API_KEY") || "",
       // For Arbitrum testnets & mainnets
-      arbitrumOne: process.env.ARBITRUM_API_KEY || "",
-      arbitrumNova: process.env.ARBITRUM_API_KEY || "",
-      arbitrumGoerli: process.env.ARBITRUM_API_KEY || "",
-      arbitrumSepolia: process.env.ARBITRUM_API_KEY || "",
+      arbitrumOne: secrets.get("ARBITRUM_API_KEY") || "",
+      arbitrumNova: secrets.get("ARBITRUM_API_KEY") || "",
+      arbitrumGoerli: secrets.get("ARBITRUM_API_KEY") || "",
+      arbitrumSepolia: secrets.get("ARBITRUM_API_KEY") || "",
       // For Avalanche testnet & mainnet
-      avalanche: process.env.AVALANCHE_API_KEY || "",
-      avalancheFujiTestnet: process.env.AVALANCHE_API_KEY || "",
+      avalanche: secrets.get("AVALANCHE_API_KEY") || "",
+      avalancheFujiTestnet: secrets.get("AVALANCHE_API_KEY") || "",
       // For Moonbeam testnet & mainnets
-      moonbeam: process.env.MOONBEAM_API_KEY || "",
-      moonriver: process.env.MOONBEAM_API_KEY || "",
-      moonbaseAlpha: process.env.MOONBEAM_API_KEY || "",
+      moonbeam: secrets.get("MOONBEAM_API_KEY") || "",
+      moonriver: secrets.get("MOONBEAM_API_KEY") || "",
+      moonbaseAlpha: secrets.get("MOONBEAM_API_KEY") || "",
       // For Harmony testnet & mainnet
-      harmony: process.env.HARMONY_API_KEY || "",
-      harmonyTest: process.env.HARMONY_API_KEY || "",
+      harmony: secrets.get("HARMONY_API_KEY") || "",
+      harmonyTest: secrets.get("HARMONY_API_KEY") || "",
       // For Aurora testnet & mainnet
-      aurora: process.env.AURORA_API_KEY || "",
-      auroraTestnet: process.env.AURORA_API_KEY || "",
+      aurora: secrets.get("AURORA_API_KEY") || "",
+      auroraTestnet: secrets.get("AURORA_API_KEY") || "",
       // For Cronos testnet & mainnet
-      cronos: process.env.CRONOS_API_KEY || "",
-      cronosTestnet: process.env.CRONOS_API_KEY || "",
+      cronos: secrets.get("CRONOS_API_KEY") || "",
+      cronosTestnet: secrets.get("CRONOS_API_KEY") || "",
       // For Gnosis/xDai testnets & mainnets
-      gnosis: process.env.GNOSIS_API_KEY || "",
-      xdai: process.env.GNOSIS_API_KEY || "",
-      sokol: process.env.GNOSIS_API_KEY || "",
-      chiado: process.env.GNOSIS_API_KEY || "",
+      gnosis: secrets.get("GNOSIS_API_KEY") || "",
+      xdai: secrets.get("GNOSIS_API_KEY") || "",
+      sokol: secrets.get("GNOSIS_API_KEY") || "",
+      chiado: secrets.get("GNOSIS_API_KEY") || "",
       // For Fuse testnet & mainnet
-      fuse: process.env.FUSE_API_KEY || "",
-      spark: process.env.FUSE_API_KEY || "",
+      fuse: secrets.get("FUSE_API_KEY") || "",
+      spark: secrets.get("FUSE_API_KEY") || "",
       // For Evmos testnet & mainnet
-      evmos: process.env.EVMOS_API_KEY || "",
-      evmosTestnet: process.env.EVMOS_API_KEY || "",
+      evmos: secrets.get("EVMOS_API_KEY") || "",
+      evmosTestnet: secrets.get("EVMOS_API_KEY") || "",
       // For Boba network testnet & mainnet
-      boba: process.env.BOBA_API_KEY || "",
-      bobaTestnet: process.env.BOBA_API_KEY || "",
+      boba: secrets.get("BOBA_API_KEY") || "",
+      bobaTestnet: secrets.get("BOBA_API_KEY") || "",
       // For Canto testnet & mainnet
-      canto: process.env.CANTO_API_KEY || "",
-      cantoTestnet: process.env.CANTO_API_KEY || "",
+      canto: secrets.get("CANTO_API_KEY") || "",
+      cantoTestnet: secrets.get("CANTO_API_KEY") || "",
       // For Base testnet & mainnet
-      base: process.env.BASE_API_KEY || "",
-      baseTestnet: process.env.BASE_API_KEY || "",
+      base: secrets.get("BASE_API_KEY") || "",
+      baseTestnet: secrets.get("BASE_API_KEY") || "",
       // For Mantle testnet & mainnet
-      mantle: process.env.MANTLE_API_KEY || "",
-      mantleTestnet: process.env.MANTLE_API_KEY || "",
+      mantle: secrets.get("MANTLE_API_KEY") || "",
+      mantleTestnet: secrets.get("MANTLE_API_KEY") || "",
       // For Scroll testnet
-      scrollTestnet: process.env.SCROLL_API_KEY || "",
+      scrollTestnet: secrets.get("SCROLL_API_KEY") || "",
       // For Linea testnet & mainnet
-      linea: process.env.LINEA_API_KEY || "",
-      lineaTestnet: process.env.LINEA_API_KEY || "",
+      linea: secrets.get("LINEA_API_KEY") || "",
+      lineaTestnet: secrets.get("LINEA_API_KEY") || "",
       // For ShimmerEVM testnet
-      shimmerEVMTestnet: process.env.SHIMMEREVM_API_KEY || "",
+      shimmerEVMTestnet: secrets.get("SHIMMEREVM_API_KEY") || "",
       // For Zora testnet & mainnet
-      zora: process.env.ZORA_API_KEY || "",
-      zoraTestnet: process.env.ZORA_API_KEY || "",
+      zora: secrets.get("ZORA_API_KEY") || "",
+      zoraTestnet: secrets.get("ZORA_API_KEY") || "",
       // For Lukso testnet & mainnet
-      lukso: process.env.LUKSO_API_KEY || "",
-      luksoTestnet: process.env.LUKSO_API_KEY || "",
+      lukso: secrets.get("LUKSO_API_KEY") || "",
+      luksoTestnet: secrets.get("LUKSO_API_KEY") || "",
       // For Manta testnet & mainnet
-      manta: process.env.MANTA_API_KEY || "",
-      mantaTestnet: process.env.MANTA_API_KEY || "",
+      manta: secrets.get("MANTA_API_KEY") || "",
+      mantaTestnet: secrets.get("MANTA_API_KEY") || "",
       // For Arthera testnet
-      artheraTestnet: process.env.ARTHERA_API_KEY || "",
+      artheraTestnet: secrets.get("ARTHERA_API_KEY") || "",
     },
     customChains: [
       {
