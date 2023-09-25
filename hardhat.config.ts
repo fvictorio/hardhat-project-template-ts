@@ -1,5 +1,3 @@
-import * as dotenv from "dotenv";
-
 import { HardhatUserConfig, secrets, task } from "hardhat/config";
 import "@nomiclabs/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
@@ -16,8 +14,6 @@ import "solidity-coverage";
 import "hardhat-contract-sizer";
 import * as tdly from "@tenderly/hardhat-tenderly";
 import "hardhat-abi-exporter";
-
-dotenv.config();
 
 // Turning off the automatic Tenderly verification
 tdly.setup({ automaticVerifications: false });
